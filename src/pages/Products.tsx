@@ -353,13 +353,15 @@ export default function ProductsPage() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      paddingTop: 4,
                     }}>
                       <span style={{
                         color: 'white',
-                        fontSize: 15,
+                        fontSize: 16,
                         fontWeight: 700,
                         textAlign: 'center',
                         lineHeight: 1,
+                        textShadow: '0 1px 3px rgba(0,0,0,0.3)',
                       }}>
                         {p.selling_price.toLocaleString()}
                       </span>
