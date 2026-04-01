@@ -66,7 +66,7 @@ export const productsApi = {
     api.get<{ success: boolean; data: Product[] }>('/products/search-by-code', { params: { code } }).then(r => r.data.data),
 
   getBySupplierCode: (supplierCode: string) =>
-    api.get<{ success: boolean; data: Product[] }>(`/products/by-supplier/${supplierCode}`).then(r => r.data.data),
+    api.get<{ success: boolean; data: Product[] }>('/products/by-supplier', { params: { supplierCode } }).then(r => r.data.data),
 
   create: (formData: FormData) =>
     api.post<{ success: boolean; data: Product; message: string }>('/products', formData, {

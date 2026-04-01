@@ -304,134 +304,138 @@ export default function ProductsPage() {
         ) : (
           <div className="product-grid">
             {products.map(p => (
-              <div 
-                key={p.id} 
-                className="product-card" 
+              <div
+                key={p.id}
+                className="product-card"
                 onClick={() => navigate(`/products/${p.id}`)}
                 role="button"
                 tabIndex={0}
                 aria-label={`Voir détails du produit ${p.name}`}
                 style={{
-                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  borderRadius: 'var(--radius-lg)',
+                  border: '1px solid var(--border)',
+                  background: 'var(--bg-1)',
+                  overflow: 'hidden',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  cursor: 'pointer',
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               >
                 {/* Image Section */}
-                <div className="product-card-image-section">
+                <div style={{
+                  position: 'relative',
+                  height: 200,
+                  background: 'var(--bg-2)',
+                  overflow: 'hidden',
+                }}>
                   {p.image_url ? (
-                    <img 
-                      className="product-card-img" 
-                      src={p.image_url} 
+                    <img
+                      className="product-card-img"
+                      src={p.image_url}
                       alt={p.name}
-                      style={{ width: '100%', height: 160, objectFit: 'cover' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   ) : (
-                    <div className="product-card-img-placeholder" style={{ height: 160 }}>
-                      <Package size={48} style={{ color: 'var(--text-2)' }} />
+                    <div style={{
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--text-3)',
+                    }}>
+                      <Package size={56} strokeWidth={1.5} />
                     </div>
                   )}
                 </div>
 
-                {/* Price - Prominent below image */}
-                {p.selling_price && (
-                  <div className="product-card-price-prominent" style={{ 
-                    padding: '8px 12px', 
-                    textAlign: 'center',
-                    background: 'var(--accent-bg)',
-                    margin: '0 12px 12px 12px',
-                    borderRadius: 'var(--radius-lg)',
-                    border: '1px solid var(--accent-border)'
+                {/* Content */}
+                <div style={{ padding: '16px', flex: 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {/* Category */}
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    fontSize: 12,
+                    color: 'var(--text-2)',
+                    fontWeight: 500,
                   }}>
-                    <div className="price-badge-large" style={{ 
-                      width: 'auto', 
-                      height: 'auto', 
-                      display: 'inline-flex', 
-                      alignItems: 'center', 
-                      gap: 6,
-                      fontSize: 16,
-                      fontWeight: 700,
-                      color: 'var(--accent)'
-                    }}>
-                      <img src={prixImg} alt="prix" style={{ width: 20, height: 20 }} />
-                      <span>{p.selling_price.toLocaleString()} {p.currency}</span>
-                    </div>
+                    <span style={{ fontSize: 16 }}>{p.sector?.icon}</span>
+                    <span>{p.category?.name}</span>
                   </div>
-                )}
 
-                {/* Header: Ref + Name + Variant */}
-                <div className="product-card-header" style={{ padding: '0 16px 12px' }}>
-                  <div className="product-card-ref">
-                    <span className="wal-badge" style={{ fontSize: 11 }}>{p.wal_reference}</span>
-                  </div>
-                  <h3 className="product-card-name" style={{ 
-                    margin: '8px 0 4px 0', 
-                    fontSize: 16, 
-                    fontWeight: 600, 
+                  {/* Product Name */}
+                  <h3 style={{
+                    fontSize: 15,
+                    fontWeight: 600,
                     color: 'var(--text-1)',
-                    lineHeight: 1.3
+                    lineHeight: 1.4,
+                    margin: 0,
+                    flex: 1,
                   }}>
                     {p.name}
                   </h3>
+
+                  {/* Variant */}
                   {p.variant && (
-                    <div className="product-card-variant" style={{ 
-                      fontSize: 13, 
-                      color: 'var(--text-2)', 
-                      fontStyle: 'italic'
+                    <div style={{
+                      fontSize: 13,
+                      color: 'var(--text-2)',
+                      fontStyle: 'italic',
                     }}>
                       {p.variant}
                     </div>
                   )}
-                </div>
 
-                {/* Supplier Badge */}
-                {p.supplier && (
-                  <div className="product-card-supplier" style={{ 
-                    padding: '0 16px 12px',
-                    borderBottom: '1px solid var(--border)'
+                  {/* Price */}
+                  {p.selling_price && (
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 8,
+                      paddingTop: 8,
+                      borderTop: '1px solid var(--border)',
+                    }}>
+                      <img src={prixImg} alt="prix" style={{ width: 18, height: 18 }} />
+                      <span style={{
+                        fontSize: 18,
+                        fontWeight: 700,
+                        color: 'var(--accent)',
+                      }}>
+                        {p.selling_price.toLocaleString()} {p.currency}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Stock Indicator */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    paddingTop: 8,
                   }}>
-                    <span className="supplier-badge" style={{
-                      display: 'inline-flex',
-                      padding: '4px 10px',
-                      background: 'var(--bg-2)',
-                      color: 'var(--text-2)',
-                      borderRadius: '20px',
-                      fontSize: 12,
-                      fontWeight: 500,
-                      border: '1px solid var(--border)'
-                    }}>
-                      Fournisseur: {p.supplier.name}
+                    <span style={{ fontSize: 11, color: 'var(--text-3)', fontWeight: 600, textTransform: 'uppercase' }}>
+                      Stock
                     </span>
-                  </div>
-                )}
-
-                {/* Footer: Category + Stock */}
-                <div className="product-card-footer-professional" style={{ padding: '12px 16px 16px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                    <div className="product-category" style={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: 6,
-                      fontSize: 13,
-                      color: 'var(--text-2)'
+                    <span style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: p.quantity_in_stock <= 0 
+                        ? 'var(--red)' 
+                        : p.quantity_in_stock <= p.min_stock_alert 
+                          ? 'var(--orange)' 
+                          : 'var(--green)',
                     }}>
-                      <span style={{ fontSize: 18 }}>{p.sector?.icon}</span>
-                      <span>{p.category?.name}</span>
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ 
-                        fontSize: 11, 
-                        color: 'var(--text-3)', 
-                        marginBottom: 4,
-                        fontWeight: 500,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.05em'
-                      }}>Stock</div>
-                      <StockBar qty={p.quantity_in_stock} min={p.min_stock_alert} />
-                      <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 4 }}>{p.unit}</div>
-                    </div>
+                      {p.quantity_in_stock} {p.unit}
+                    </span>
                   </div>
                 </div>
               </div>
