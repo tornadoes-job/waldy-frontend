@@ -344,10 +344,10 @@ export default function ProductsPage() {
                       top: 8,
                       right: 8,
                       zIndex: 10,
-                      width: 75,
-                      height: 75,
+                      width: 80,
+                      height: 80,
                       backgroundImage: `url(${prixImg})`,
-                      backgroundSize: 'contain',
+                      backgroundSize: '100% 100%',
                       backgroundRepeat: 'no-repeat',
                       backgroundPosition: 'center',
                       display: 'flex',
@@ -356,7 +356,7 @@ export default function ProductsPage() {
                     }}>
                       <span style={{
                         color: 'white',
-                        fontSize: 14,
+                        fontSize: 15,
                         fontWeight: 700,
                         textAlign: 'center',
                         lineHeight: 1,
