@@ -337,6 +337,35 @@ export default function ProductsPage() {
                   background: 'var(--bg-2)',
                   overflow: 'hidden',
                 }}>
+                  {/* Price Badge - Top Right */}
+                  {p.selling_price && (
+                    <div style={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      zIndex: 10,
+                      width: 70,
+                      height: 70,
+                      background: 'radial-gradient(circle, #e53935 0%, #c62828 100%)',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                      border: '3px solid rgba(255,255,255,0.3)',
+                    }}>
+                      <span style={{
+                        color: 'white',
+                        fontSize: 16,
+                        fontWeight: 700,
+                        textAlign: 'center',
+                        lineHeight: 1.1,
+                      }}>
+                        {(p.selling_price / 1000).toFixed(1)}K
+                      </span>
+                    </div>
+                  )}
+                  
                   {p.image_url ? (
                     <img
                       className="product-card-img"
@@ -392,26 +421,6 @@ export default function ProductsPage() {
                       fontStyle: 'italic',
                     }}>
                       {p.variant}
-                    </div>
-                  )}
-
-                  {/* Price */}
-                  {p.selling_price && (
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 8,
-                      paddingTop: 8,
-                      borderTop: '1px solid var(--border)',
-                    }}>
-                      <img src={prixImg} alt="prix" style={{ width: 18, height: 18 }} />
-                      <span style={{
-                        fontSize: 18,
-                        fontWeight: 700,
-                        color: 'var(--accent)',
-                      }}>
-                        {p.selling_price.toLocaleString()} {p.currency}
-                      </span>
                     </div>
                   )}
 
