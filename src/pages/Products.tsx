@@ -58,7 +58,11 @@ export default function ProductsPage() {
   const handleWalSearch = useCallback(async (val: string) => {
     setWalSearchCode(val);
     if (val.length >= 7) {
-      const results = await productsApi.searchByCode(val);
+      // Check if it's a supplier code (W/FRN-...)
+      const isSupplierCode = /^W\/FRN-/i.test(val);
+      const results = isSupplierCode 
+        ? await productsApi.getBySupplierCode(val)
+        : await productsApi.searchByCode(val);
       setWalResults(results);
     } else {
       setWalResults(null);
@@ -99,7 +103,7 @@ export default function ProductsPage() {
                   <Search size={14} />
                   <input
                     className="form-input mono"
-                    placeholder="W/AGR/MIL → affiche tous les produits de mil (mil blanc, mil rouge, etc.)..."
+                    placeholder="W/AGR/MIL ou W/FRN-0001 → affiche tous les produits..."
                     value={walSearchCode}
                     onChange={e => handleWalSearch(e.target.value.toUpperCase())}
                   />
@@ -124,8 +128,12 @@ export default function ProductsPage() {
             {walResults !== null && walResults.length > 0 && (
               <div style={{ marginTop: 12, padding: '12px 16px', background: 'var(--bg-2)', borderRadius: 'var(--radius)', fontSize: 13 }}>
                 <strong>{walResults.length}</strong> produit{walResults.length > 1 ? 's' : ''} trouvé{walResults.length > 1 ? 's' : ''}
-                {walResults[0]?.category && (
-                  <span> dans la catégorie <strong>{walResults[0].category.name}</strong></span>
+                {/^W\/FRN-/i.test(walSearchCode) ? (
+                  <span> du fournisseur <strong>{walSearchCode}</strong></span>
+                ) : (
+                  walResults[0]?.category && (
+                    <span> dans la catégorie <strong>{walResults[0].category.name}</strong></span>
+                  )
                 )}
               </div>
             )}
