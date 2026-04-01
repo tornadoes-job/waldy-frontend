@@ -682,9 +682,18 @@ td.name-cell { color: var(--text-1); font-weight: 500; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 64px;
+  min-height: 64px;
   width: 70px;
   height: 70px;
   flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .price-badge {
+    min-width: 56px;
+    min-height: 56px;
+  }
 }
 
 .price-badge-img {
@@ -717,10 +726,16 @@ td.name-cell { color: var(--text-1); font-weight: 500; }
 }
 
 .price-badge-value {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 1;
   margin-top: 2px;
+}
+
+@media (max-width: 768px) {
+  .price-badge-value {
+    font-size: 16px;
+  }
 }
 
 /* Price Badge Large */

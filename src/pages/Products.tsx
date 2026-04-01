@@ -245,10 +245,10 @@ export default function ProductsPage() {
                       </td>
                       <td>
                         {p.selling_price ? (
-                          <div className="price-badge" style={{ width: 50, height: 50 }}>
+<div className="price-badge">
                             <img src={prixImg} alt="prix" className="price-badge-img" />
                             <div className="price-badge-content">
-                              <span className="price-badge-value" style={{ fontSize: 13 }}>
+                              <span className="price-badge-value">
                                 {p.selling_price.toLocaleString()}
                               </span>
                             </div>
