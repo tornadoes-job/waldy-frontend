@@ -293,42 +293,134 @@ export default function ProductsPage() {
         ) : (
           <div className="product-grid">
             {products.map(p => (
-              <div key={p.id} className="product-card" onClick={() => navigate(`/products/${p.id}`)}>
-                <div className="product-card-img-wrap">
-                  {p.image_url
-                    ? <img className="product-card-img" src={p.image_url} alt={p.name} />
-                    : <div className="product-card-img-placeholder"><Package size={48} /></div>
-                  }
-                  {p.selling_price && (
-                    <div className="product-card-price">
-                      <div className="price-badge">
-                        <img src={prixImg} alt="prix" className="price-badge-img" />
-                        <div className="price-badge-content">
-                          <span className="price-badge-value">
-                            {p.selling_price.toLocaleString()}
-                          </span>
-                        </div>
-                      </div>
+              <div 
+                key={p.id} 
+                className="product-card" 
+                onClick={() => navigate(`/products/${p.id}`)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Voir détails du produit ${p.name}`}
+                style={{
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                {/* Image Section */}
+                <div className="product-card-image-section">
+                  {p.image_url ? (
+                    <img 
+                      className="product-card-img" 
+                      src={p.image_url} 
+                      alt={p.name}
+                      style={{ width: '100%', height: 160, objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <div className="product-card-img-placeholder" style={{ height: 160 }}>
+                      <Package size={48} style={{ color: 'var(--text-2)' }} />
                     </div>
                   )}
                 </div>
-                <div className="product-card-body">
-                  <div className="product-card-ref"><span className="wal-badge">{p.wal_reference}</span></div>
-                  <div className="product-card-name">{p.name}</div>
-                  {p.variant && <div className="product-card-variant">{p.variant}</div>}
-                </div>
-                <div className="product-card-category">
-                  <span>{p.sector?.icon}</span>
-                  <span>{p.category?.name}</span>
-                </div>
-                <div className="product-card-footer">
-                  <div>
-                    <div className="product-card-stock-label">Stock</div>
-                    <StockBar qty={p.quantity_in_stock} min={p.min_stock_alert} />
+
+                {/* Price - Prominent below image */}
+                {p.selling_price && (
+                  <div className="product-card-price-prominent" style={{ 
+                    padding: '8px 12px', 
+                    textAlign: 'center',
+                    background: 'var(--accent-bg)',
+                    margin: '0 12px 12px 12px',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--accent-border)'
+                  }}>
+                    <div className="price-badge-large" style={{ 
+                      width: 'auto', 
+                      height: 'auto', 
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      gap: 6,
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: 'var(--accent)'
+                    }}>
+                      <img src={prixImg} alt="prix" style={{ width: 20, height: 20 }} />
+                      <span>{p.selling_price.toLocaleString()} {p.currency}</span>
+                    </div>
                   </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <div className="product-card-stock-label">Unité</div>
-                    <div style={{ fontSize: 13, color: 'var(--text-1)', fontWeight: 500, marginTop: 2 }}>{p.unit}</div>
+                )}
+
+                {/* Header: Ref + Name + Variant */}
+                <div className="product-card-header" style={{ padding: '0 16px 12px' }}>
+                  <div className="product-card-ref">
+                    <span className="wal-badge" style={{ fontSize: 11 }}>{p.wal_reference}</span>
+                  </div>
+                  <h3 className="product-card-name" style={{ 
+                    margin: '8px 0 4px 0', 
+                    fontSize: 16, 
+                    fontWeight: 600, 
+                    color: 'var(--text-1)',
+                    lineHeight: 1.3
+                  }}>
+                    {p.name}
+                  </h3>
+                  {p.variant && (
+                    <div className="product-card-variant" style={{ 
+                      fontSize: 13, 
+                      color: 'var(--text-2)', 
+                      fontStyle: 'italic'
+                    }}>
+                      {p.variant}
+                    </div>
+                  )}
+                </div>
+
+                {/* Supplier Badge */}
+                {p.supplier && (
+                  <div className="product-card-supplier" style={{ 
+                    padding: '0 16px 12px',
+                    borderBottom: '1px solid var(--border)'
+                  }}>
+                    <span className="supplier-badge" style={{
+                      display: 'inline-flex',
+                      padding: '4px 10px',
+                      background: 'var(--bg-2)',
+                      color: 'var(--text-2)',
+                      borderRadius: '20px',
+                      fontSize: 12,
+                      fontWeight: 500,
+                      border: '1px solid var(--border)'
+                    }}>
+                      Fournisseur: {p.supplier.name}
+                    </span>
+                  </div>
+                )}
+
+                {/* Footer: Category + Stock */}
+                <div className="product-card-footer-professional" style={{ padding: '12px 16px 16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <div className="product-category" style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: 6,
+                      fontSize: 13,
+                      color: 'var(--text-2)'
+                    }}>
+                      <span style={{ fontSize: 18 }}>{p.sector?.icon}</span>
+                      <span>{p.category?.name}</span>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ 
+                        fontSize: 11, 
+                        color: 'var(--text-3)', 
+                        marginBottom: 4,
+                        fontWeight: 500,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
+                      }}>Stock</div>
+                      <StockBar qty={p.quantity_in_stock} min={p.min_stock_alert} />
+                      <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 4 }}>{p.unit}</div>
+                    </div>
                   </div>
                 </div>
               </div>
