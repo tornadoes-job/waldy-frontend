@@ -344,24 +344,32 @@ export default function ProductsPage() {
                       top: 10,
                       right: 10,
                       zIndex: 10,
-                      width: 100,
-                      height: 100,
-                      backgroundImage: `url(${prixImg})`,
-                      backgroundSize: '100% 100%',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'center',
                       display: 'flex',
+                      flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      paddingTop: 6,
                     }}>
+                      <img 
+                        src={prixImg} 
+                        alt="prix" 
+                        style={{ 
+                          width: 90, 
+                          height: 90,
+                          objectFit: 'contain',
+                          display: 'block',
+                        }} 
+                      />
                       <span style={{
                         color: 'white',
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: 700,
                         textAlign: 'center',
                         lineHeight: 1,
                         textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -45%)',
                       }}>
                         {p.selling_price.toLocaleString()}
                       </span>
