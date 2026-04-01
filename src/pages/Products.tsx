@@ -341,24 +341,20 @@ export default function ProductsPage() {
                   {p.selling_price && (
                     <div style={{
                       position: 'absolute',
-                      top: 10,
-                      right: 10,
+                      top: 12,
+                      right: 12,
                       zIndex: 10,
+                      width: 85,
+                      height: 85,
+                      background: '#E31E24',
+                      borderRadius: '50%',
                       display: 'flex',
-                      flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                      border: '3px solid white',
+                      outline: '2px solid #E31E24',
                     }}>
-                      <img 
-                        src={prixImg} 
-                        alt="prix" 
-                        style={{ 
-                          width: 90, 
-                          height: 90,
-                          objectFit: 'contain',
-                          display: 'block',
-                        }} 
-                      />
                       <span style={{
                         color: 'white',
                         fontSize: 18,
@@ -366,10 +362,6 @@ export default function ProductsPage() {
                         textAlign: 'center',
                         lineHeight: 1,
                         textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -45%)',
                       }}>
                         {p.selling_price.toLocaleString()}
                       </span>
