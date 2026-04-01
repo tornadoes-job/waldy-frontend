@@ -346,14 +346,13 @@ export default function ProductsPage() {
                       zIndex: 10,
                       width: 75,
                       height: 75,
-                      background: '#e53935',
-                      borderRadius: '50%',
+                      backgroundImage: `url(${prixImg})`,
+                      backgroundSize: 'contain',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                      border: '4px solid white',
-                      outline: '2px solid #e53935',
                     }}>
                       <span style={{
                         color: 'white',
