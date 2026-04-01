@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GitBranch, Search, ArrowRight, Package, Users } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { productsApi } from '../services/api';
 import type { Product } from '../types';
 
@@ -21,6 +22,16 @@ export default function TraceabilityPage() {
 
       // Detect if it's a supplier code (starts with W/FRN)
       const isSupplierCode = upperCode.startsWith('W/FRN');
+      
+      // Validate supplier code format if it looks like a supplier code
+      if (isSupplierCode && !/^W\/FRN-\d{4}$/i.test(upperCode)) {
+        toast.error('Format de code fournisseur invalide. Utilisez le format W/FRN-XXXX (ex: W/FRN-0001)');
+        setResults([]);
+        setSearchType('supplier');
+        setLoading(false);
+        return;
+      }
+      
       setSearchType(isSupplierCode ? 'supplier' : 'wal');
 
       const data = isSupplierCode
@@ -94,8 +105,8 @@ export default function TraceabilityPage() {
             <div style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
               <input
                 className="form-input mono"
-                style={{ flex: 1, fontSize: 16, letterSpacing: '0.05em' }}
-                placeholder="W/AGR/RIZ ou W/AGR/RIZ-001..."
+                style={{ flex: 1, fontSize: 16, letterSpacing: '0.05em', borderColor: code.trim().toUpperCase().startsWith('W/FRN') ? 'var(--accent)' : undefined }}
+                placeholder="W/AGR/RIZ ou W/FRN-0001..."
                 value={code}
                 onChange={e => setCode(e.target.value.toUpperCase())}
                 onKeyDown={e => { if (e.key === 'Enter') handleSearch(); }}
@@ -105,6 +116,12 @@ export default function TraceabilityPage() {
                 Rechercher
               </button>
             </div>
+            {code.trim().toUpperCase().startsWith('W/FRN') && (
+              <div style={{ marginTop: 8, fontSize: 12, color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Users size={12} />
+                <strong>Recherche par fournisseur</strong> — Tous les produits de ce fournisseur seront affichés
+              </div>
+            )}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               <span style={{ fontSize: 11, color: 'var(--text-3)' }}>Exemples :</span>
               {examples.map(ex => (

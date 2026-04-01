@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Search, Package, AlertTriangle, Filter, Grid, List, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Search, Package, AlertTriangle, Filter, Grid, List, ChevronLeft, ChevronRight, Users } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { productsApi, sectorsApi } from '../services/api';
 import type { ProductFilters, Product } from '../types';
@@ -58,9 +58,14 @@ export default function ProductsPage() {
   const handleWalSearch = useCallback(async (val: string) => {
     setWalSearchCode(val);
     if (val.length >= 7) {
-      // Check if it's a supplier code (W/FRN-...)
-      const isSupplierCode = /^W\/FRN-/i.test(val);
-      const results = isSupplierCode 
+      // Check if it's a supplier code (W/FRN-XXXX format)
+      const isSupplierCode = /^W\/FRN/i.test(val);
+      if (isSupplierCode && !/^W\/FRN-\d{4}$/i.test(val)) {
+        // Invalid supplier code format, don't search yet
+        setWalResults(null);
+        return;
+      }
+      const results = isSupplierCode
         ? await productsApi.getBySupplierCode(val)
         : await productsApi.searchByCode(val);
       setWalResults(results);
@@ -99,15 +104,21 @@ export default function ProductsPage() {
                 <label className="form-label" style={{ marginBottom: 6, display: 'block' }}>
                   🔍 Recherche par code WAL
                 </label>
-                <div className="search-wrap" style={{ maxWidth: '100%' }}>
+                <div className="search-wrap" style={{ maxWidth: '100%', borderColor: walSearchCode.startsWith('W/FRN') ? 'var(--accent)' : undefined }}>
                   <Search size={14} />
                   <input
                     className="form-input mono"
-                    placeholder="W/AGR/MIL ou W/FRN-0001 → affiche tous les produits..."
+                    placeholder="W/AGR/MIL ou W/FRN-0001 → affiche tous les produits du fournisseur..."
                     value={walSearchCode}
                     onChange={e => handleWalSearch(e.target.value.toUpperCase())}
                   />
                 </div>
+                {walSearchCode.startsWith('W/FRN') && (
+                  <div style={{ marginTop: 6, fontSize: 12, color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Users size={12} />
+                    <strong>Mode fournisseur</strong> — Affiche tous les produits de {walSearchCode}
+                  </div>
+                )}
               </div>
               {walResults !== null && (
                 <button className="btn btn-ghost btn-sm" onClick={() => { setWalResults(null); setWalSearchCode(''); }}>
@@ -128,8 +139,8 @@ export default function ProductsPage() {
             {walResults !== null && walResults.length > 0 && (
               <div style={{ marginTop: 12, padding: '12px 16px', background: 'var(--bg-2)', borderRadius: 'var(--radius)', fontSize: 13 }}>
                 <strong>{walResults.length}</strong> produit{walResults.length > 1 ? 's' : ''} trouvé{walResults.length > 1 ? 's' : ''}
-                {/^W\/FRN-/i.test(walSearchCode) ? (
-                  <span> du fournisseur <strong>{walSearchCode}</strong></span>
+                {/^W\/FRN/i.test(walSearchCode) ? (
+                  <span> du fournisseur <strong style={{ color: 'var(--accent)' }}>{walSearchCode}</strong></span>
                 ) : (
                   walResults[0]?.category && (
                     <span> dans la catégorie <strong>{walResults[0].category.name}</strong></span>
