@@ -286,10 +286,10 @@ export default function ProductsPage() {
           <div className="product-grid">
             {products.map(p => (
               <div key={p.id} className="product-card" onClick={() => navigate(`/products/${p.id}`)}>
-                <div style={{ position: 'relative' }}>
+                <div className="product-card-img-wrap">
                   {p.image_url
                     ? <img className="product-card-img" src={p.image_url} alt={p.name} />
-                    : <div className="product-card-img"><Package size={40} /></div>
+                    : <div className="product-card-img-placeholder"><Package size={48} /></div>
                   }
                   {p.selling_price && (
                     <div className="product-card-price">
@@ -309,9 +309,19 @@ export default function ProductsPage() {
                   <div className="product-card-name">{p.name}</div>
                   {p.variant && <div className="product-card-variant">{p.variant}</div>}
                 </div>
+                <div className="product-card-category">
+                  <span>{p.sector?.icon}</span>
+                  <span>{p.category?.name}</span>
+                </div>
                 <div className="product-card-footer">
-                  <span style={{ fontSize: 12, color: 'var(--text-3)' }}>{p.sector?.icon} {p.category?.name}</span>
-                  <StockBar qty={p.quantity_in_stock} min={p.min_stock_alert} />
+                  <div>
+                    <div className="product-card-stock-label">Stock</div>
+                    <StockBar qty={p.quantity_in_stock} min={p.min_stock_alert} />
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div className="product-card-stock-label">Unité</div>
+                    <div style={{ fontSize: 13, color: 'var(--text-1)', fontWeight: 500, marginTop: 2 }}>{p.unit}</div>
+                  </div>
                 </div>
               </div>
             ))}

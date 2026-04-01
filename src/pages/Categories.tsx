@@ -146,8 +146,8 @@ export default function CategoriesPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   <div className="form-grid form-grid-2">
                     <div className="form-group">
-                      <label className="form-label">Code (3 lettres) <span className="required">*</span></label>
-                      <input className="form-input mono" maxLength={5}
+                      <label className="form-label">Code (3-8 caractères) <span className="required">*</span></label>
+                      <input className="form-input mono" maxLength={8}
                         value={catForm.code} onChange={e => setCatForm(f => ({ ...f, code: e.target.value.toUpperCase() }))}
                         placeholder="RIZ, BOV, VET..." />
                       {previewCode && <span className="form-hint">→ <strong>{previewCode}</strong></span>}
