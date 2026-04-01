@@ -344,23 +344,25 @@ export default function ProductsPage() {
                       top: 8,
                       right: 8,
                       zIndex: 10,
+                      width: 75,
+                      height: 75,
+                      background: '#e53935',
+                      borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 4,
-                      background: 'white',
-                      padding: '6px 10px',
-                      borderRadius: '20px',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-                      border: '2px solid #e53935',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                      border: '4px solid white',
+                      outline: '2px solid #e53935',
                     }}>
-                      <img src={prixImg} alt="prix" style={{ width: 20, height: 20 }} />
                       <span style={{
-                        color: '#e53935',
-                        fontSize: 13,
+                        color: 'white',
+                        fontSize: 14,
                         fontWeight: 700,
-                        whiteSpace: 'nowrap',
+                        textAlign: 'center',
+                        lineHeight: 1,
                       }}>
-                        {p.selling_price.toLocaleString()} FCFA
+                        {p.selling_price.toLocaleString()}
                       </span>
                     </div>
                   )}
