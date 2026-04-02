@@ -70,7 +70,17 @@ export default function ProductFormModal({ product, onClose, onSuccess }: Props)
       return;
     }
     const fd = new FormData();
-    Object.entries(form).forEach(([k, v]) => { if (v) fd.append(k, v); });
+    // Always send sector_id, category_id, supplier_id even if they might be unchanged
+    fd.append('sector_id', form.sector_id);
+    fd.append('category_id', form.category_id);
+    fd.append('supplier_id', form.supplier_id);
+    fd.append('name', form.name);
+    if (form.variant) fd.append('variant', form.variant);
+    if (form.unit) fd.append('unit', form.unit);
+    if (form.quantity_in_stock) fd.append('quantity_in_stock', form.quantity_in_stock);
+    if (form.min_stock_alert) fd.append('min_stock_alert', form.min_stock_alert);
+    if (form.purchase_price) fd.append('purchase_price', form.purchase_price);
+    if (form.selling_price) fd.append('selling_price', form.selling_price);
     if (imgFile) fd.append('image', imgFile);
     mutation.mutate(fd);
   };
